@@ -1,9 +1,15 @@
+import { useState } from "react";
+import ActivityForm from "../form/ActivityForm";
+
 type Props = {
   activity: Activity | null;
+  setEditMode?: (editMode: boolean) => void;
   setSelectedActivity: (activity: Activity | null) => void;
 };
 
 const ActivityDetails = ({ activity, setSelectedActivity }: Props) => {
+  const [editMode, setEditMode] = useState(false);
+
   const handleCancelSelectedActivity = () => {
     setSelectedActivity(null);
   };
@@ -14,6 +20,17 @@ const ActivityDetails = ({ activity, setSelectedActivity }: Props) => {
         <span className="text-primary mb-4">No activity selected</span>
         <p className="text-base-content">Select an activity to view details</p>
       </div>
+    );
+  }
+
+  if (editMode) {
+    // Pass the activity as a prop for editing
+    return (
+      <ActivityForm
+        activity={activity}
+        setEditMode={setEditMode}
+        onCancel={handleCancelSelectedActivity}
+      />
     );
   }
 
@@ -42,7 +59,9 @@ const ActivityDetails = ({ activity, setSelectedActivity }: Props) => {
           <span className="badge badge-ghost">{activity.venue}</span>
         </div>
         <div className="card-actions flex gap-2 mt-2">
-          <button className="btn btn-primary">Edit</button>
+          <button className="btn btn-primary" onClick={() => setEditMode(true)}>
+            Edit
+          </button>
           <button
             className="btn btn-error"
             onClick={handleCancelSelectedActivity}

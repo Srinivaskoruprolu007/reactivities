@@ -1,12 +1,12 @@
 type Activity = {
-  id: string;
+  id?: string;
   title: string;
   date: string;
   description: string;
   category: string;
-  isCancelled: boolean;
+  isCancelled?: boolean;
   city: string;
   venue: string;
-  latitude: string;
-  longitude: string;
+  latitude?: string;
+  longitude?: string;
 };

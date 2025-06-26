@@ -1,11 +1,14 @@
 import ActivityDetails from "../details/ActivityDetails";
+import ActivityFrom from "../form/ActivityForm";
 import ActivityCard from "./ActivityCard";
 import { useState } from "react";
 
 type Props = {
   activities: Activity[];
+  editMode: boolean;
+  setEditMode: (editMode: boolean) => void;
 };
-const ActivityDashboard = ({ activities }: Props) => {
+const ActivityDashboard = ({ activities, editMode, setEditMode }: Props) => {
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(
     null
   );
@@ -32,14 +35,17 @@ const ActivityDashboard = ({ activities }: Props) => {
             ))
           )}
         </div>
-        {selectedActivity && (
-          <div className="hidden md:block">
+        <div className="hidden md:block">
+          {editMode ? (
+            <ActivityFrom setEditMode={setEditMode} />
+          ) : selectedActivity ? (
             <ActivityDetails
               activity={selectedActivity}
               setSelectedActivity={setSelectedActivity}
+              setEditMode={setEditMode}
             />
-          </div>
-        )}
+          ) : null}
+        </div>
       </div>
     </section>
   );

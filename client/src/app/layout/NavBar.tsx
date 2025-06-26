@@ -1,7 +1,10 @@
 import { Link } from "react-router";
 import { FiAlignLeft } from "react-icons/fi";
 
-const NavBar = () => {
+interface Props {
+  setEditMode: (editMode: boolean) => void;
+}
+const NavBar = ({ setEditMode }: Props) => {
   return (
     <div className="navbar gradient-bg shadow-sm container sticky top-0 z-50 backdrop-blur-xl">
       <div className="navbar-start ">
@@ -35,12 +38,12 @@ const NavBar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <Link
-          to="/login"
-          className="btn btn-active border-none normal-case text-xl gradient-text bg-none"
+        <button
+          className="btn btn-primary btn-active normal-case text-xl gradient-text bg-none"
+          onClick={() => setEditMode(true)}
         >
-          Login
-        </Link>
+          Create Activity
+        </button>
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import ActivityDashboard from "../../features/activities/dasboard/ActivityDashbo
 
 function App() {
   const [activities, setActivities] = useState<Activity[]>([]);
+  const [editMode, setEditMode] = useState(false);
   useEffect(() => {
     axios
       .get<Activity[]>("https://localhost:5001/api/activities")
@@ -14,8 +15,8 @@ function App() {
   }, []);
   return (
     <>
-      <NavBar />
-     <ActivityDashboard activities={activities}/>
+      <NavBar setEditMode={setEditMode} />
+     <ActivityDashboard activities={activities} editMode={editMode} setEditMode={setEditMode}/>
     </>
   );
 }
