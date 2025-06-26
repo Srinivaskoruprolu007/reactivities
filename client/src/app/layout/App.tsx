@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import NavBar from "./NavBar";
+import ActivityDashboard from "../../features/activities/dasboard/ActivityDashboard";
 
 function App() {
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -12,11 +14,8 @@ function App() {
   }, []);
   return (
     <>
-      <ul className="list">
-        {activities.map((activity) => (
-          <li key={activity.id}>{activity.title}</li>
-        ))}
-      </ul>
+      <NavBar />
+     <ActivityDashboard activities={activities}/>
     </>
   );
 }

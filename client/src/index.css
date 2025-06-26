@@ -1,2 +1,13 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+/* add tailwind utility class for gradient text effect */
+@layer utilities {
+    .gradient-text {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-yellow-300;
+    }
+    /* class for gradient background with different color than gradient-text */
+    .gradient-bg {
+        @apply bg-clip-border bg-gradient-to-r from-blue-400 to-blue-800;
+    }
+}
