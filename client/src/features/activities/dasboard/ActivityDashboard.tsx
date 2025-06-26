@@ -6,7 +6,9 @@ type Props = {
   activities: Activity[];
 };
 const ActivityDashboard = ({ activities }: Props) => {
-  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
+  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(
+    null
+  );
   return (
     <section className="container px-2 py-6">
       <h1 className="text-2xl font-bold mb-4 text-center text-primary">
@@ -22,12 +24,22 @@ const ActivityDashboard = ({ activities }: Props) => {
               </p>
             </div>
           ) : (
-            activities.map((activity) => <ActivityCard activity={activity} setSelectedActivity={setSelectedActivity}/>)
+            activities.map((activity) => (
+              <ActivityCard
+                activity={activity}
+                setSelectedActivity={setSelectedActivity}
+              />
+            ))
           )}
         </div>
-        <div className="hidden lg:block">
-          <ActivityDetails activity={selectedActivity} />
-        </div>
+        {selectedActivity && (
+          <div className="hidden md:block">
+            <ActivityDetails
+              activity={selectedActivity}
+              setSelectedActivity={setSelectedActivity}
+            />
+          </div>
+        )}
       </div>
     </section>
   );
