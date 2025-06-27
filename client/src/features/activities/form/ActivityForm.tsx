@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useCreateActivity } from "../../../hooks/useActivities"; // <-- import your hook
 
 type Props = {
   setEditMode: (editMode: boolean) => void;
@@ -7,29 +9,48 @@ type Props = {
 };
 
 const ActivityForm = ({ setEditMode, activity }: Props) => {
-  const [form, setForm] = useState<Activity>({
-    title: "",
-    description: "",
-    category: "",
-    date: "",
-    city: "",
-    venue: "",
+  const { register, handleSubmit, reset } = useForm<Activity>({
+    defaultValues: {
+      title: "",
+      description: "",
+      category: "",
+      date: "",
+      city: "",
+      venue: "",
+    },
   });
+
+  const { createActivity } = useCreateActivity(); // <-- use the mutation hook
 
   useEffect(() => {
     if (activity) {
-      setForm(activity);
+      reset(activity);
+    } else {
+      reset({
+        title: "",
+        description: "",
+        category: "",
+        date: "",
+        city: "",
+        venue: "",
+      });
     }
-  }, [activity]);
+  }, [activity, reset]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const onSubmit = (data: Activity) => {
+    if (!activity) {
+      createActivity(data);
+    } else {
+      // handle update logic here if needed
+      setEditMode(false);
+    }
   };
 
   return (
-    <form className="card bg-base-300 shadow-md p-6 w-full h-full mx-auto">
+    <form
+      className="card bg-base-300 shadow-md p-6 w-full h-full mx-auto"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <h2 className="card-title mb-4">
         {activity ? "Edit Activity" : "Create Activity"}
       </h2>
@@ -40,11 +61,9 @@ const ActivityForm = ({ setEditMode, activity }: Props) => {
           </label>
           <input
             type="text"
-            name="title"
             placeholder="Title"
             className="input input-bordered flex-1"
-            value={form.title}
-            onChange={handleChange}
+            {...register("title", { required: true })}
           />
         </div>
         <div className="form-control flex flex-row items-center gap-4">
@@ -52,11 +71,9 @@ const ActivityForm = ({ setEditMode, activity }: Props) => {
             <span className="label-text">Description</span>
           </label>
           <textarea
-            name="description"
             placeholder="Description"
             className="textarea textarea-bordered flex-1"
-            value={form.description}
-            onChange={handleChange}
+            {...register("description", { required: true })}
           ></textarea>
         </div>
         <div className="form-control flex flex-row items-center gap-4">
@@ -65,11 +82,9 @@ const ActivityForm = ({ setEditMode, activity }: Props) => {
           </label>
           <input
             type="text"
-            name="category"
             placeholder="Category"
             className="input input-bordered flex-1"
-            value={form.category}
-            onChange={handleChange}
+            {...register("category", { required: true })}
           />
         </div>
         <div className="form-control flex flex-row items-center gap-4">
@@ -78,11 +93,9 @@ const ActivityForm = ({ setEditMode, activity }: Props) => {
           </label>
           <input
             type="date"
-            name="date"
             placeholder="Date"
             className="input input-bordered flex-1"
-            value={form.date}
-            onChange={handleChange}
+            {...register("date", { required: true })}
           />
         </div>
         <div className="form-control flex flex-row items-center gap-4">
@@ -91,11 +104,9 @@ const ActivityForm = ({ setEditMode, activity }: Props) => {
           </label>
           <input
             type="text"
-            name="city"
             placeholder="City"
             className="input input-bordered flex-1"
-            value={form.city}
-            onChange={handleChange}
+            {...register("city", { required: true })}
           />
         </div>
         <div className="form-control flex flex-row items-center gap-4">
@@ -104,11 +115,9 @@ const ActivityForm = ({ setEditMode, activity }: Props) => {
           </label>
           <input
             type="text"
-            name="venue"
             placeholder="Venue"
             className="input input-bordered flex-1"
-            value={form.venue}
-            onChange={handleChange}
+            {...register("venue", { required: true })}
           />
         </div>
       </div>

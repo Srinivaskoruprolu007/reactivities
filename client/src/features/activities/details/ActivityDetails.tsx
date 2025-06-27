@@ -24,7 +24,6 @@ const ActivityDetails = ({ activity, setSelectedActivity }: Props) => {
   }
 
   if (editMode) {
-    // Pass the activity as a prop for editing
     return (
       <ActivityForm
         activity={activity}

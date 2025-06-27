@@ -1,10 +1,27 @@
+import { useRef } from "react";
+import { useDeleteActivity } from "../../../hooks/useActivities";
+
 type Props = {
   activity: Activity;
   setSelectedActivity: (activity: Activity | null) => void;
 };
 
 const ActivityCard = ({ activity, setSelectedActivity }: Props) => {
+  const modalRef = useRef<HTMLDialogElement>(null);
+  const deleteActivity = useDeleteActivity();
+
   const handleCardClick = () => setSelectedActivity(activity);
+
+  const handleDelete = () => {
+    // Guard against undefined id
+    if (!activity.id) return;
+    deleteActivity.mutate(activity.id, {
+      onSuccess: () => {
+        modalRef.current?.close();
+      },
+    });
+  };
+
   return (
     <div
       key={activity.id}
@@ -36,13 +53,37 @@ const ActivityCard = ({ activity, setSelectedActivity }: Props) => {
           {" | "}
           <span>Lng: {activity.longitude}</span>
         </div>
-        <div className="mt-4 flex justify-end">
+        <div className="mt-4 flex justify-end gap-2">
+          <button
+            className="btn btn-error btn-sm"
+            onClick={() => modalRef.current?.showModal()}
+          >
+            Delete
+          </button>
           <button className="btn btn-primary btn-sm" onClick={handleCardClick}>
             View
           </button>
         </div>
       </div>
+      <dialog ref={modalRef} className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Delete Activity</h3>
+          <p className="py-4">
+            Are you sure you want to delete this {activity.title} ? This action
+            cannot be undone.
+          </p>
+          <div className="modal-action">
+            <button className="btn" onClick={() => modalRef.current?.close()}>
+              Cancel
+            </button>
+            <button className="btn btn-error" onClick={handleDelete}>
+              Delete
+            </button>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 };
+
 export default ActivityCard;
