@@ -1,10 +1,9 @@
 import { Link } from "react-router";
 import { FiAlignLeft } from "react-icons/fi";
+import { useActivityStore } from "../../store/activityStore";
 
-interface Props {
-  setEditMode: (editMode: boolean) => void;
-}
-const NavBar = ({ setEditMode }: Props) => {
+const NavBar = () => {
+  const setEditMode = useActivityStore((s) => s.setEditMode);
   return (
     <div className="navbar gradient-bg shadow-sm container sticky top-0 z-50 backdrop-blur-xl">
       <div className="navbar-start ">

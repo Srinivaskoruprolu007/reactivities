@@ -1,17 +1,15 @@
 import ActivityDetails from "../details/ActivityDetails";
 import ActivityFrom from "../form/ActivityForm";
 import ActivityCard from "./ActivityCard";
-import { useState } from "react";
+import { useActivityStore } from "../../../store/activityStore";
 
-type Props = {
-  activities: Activity[];
-  editMode: boolean;
-  setEditMode: (editMode: boolean) => void;
-};
-const ActivityDashboard = ({ activities, editMode, setEditMode }: Props) => {
-  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(
-    null
-  );
+const ActivityDashboard = () => {
+  const activities = useActivityStore((s) => s.activities);
+  const selectedActivity = useActivityStore((s) => s.selectedActivity);
+  const setSelectedActivity = useActivityStore((s) => s.setSelectedActivity);
+  const editMode = useActivityStore((s) => s.editMode);
+  const setEditMode = useActivityStore((s) => s.setEditMode);
+
   return (
     <section className="container px-2 py-6">
       <h1 className="text-2xl font-bold mb-4 text-center text-primary">
@@ -29,6 +27,7 @@ const ActivityDashboard = ({ activities, editMode, setEditMode }: Props) => {
           ) : (
             activities.map((activity) => (
               <ActivityCard
+                key={activity.id}
                 activity={activity}
                 setSelectedActivity={setSelectedActivity}
               />
